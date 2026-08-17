@@ -38,7 +38,10 @@ const TITLE_RE = /<title[^>]*>([\s\S]*?)<\/title>/i;
 
 /** Escapes `&`, `<`, and `>` for safe interpolation into SVG text content. */
 function escapeXml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
+    />/g,
+    "&gt;",
+  );
 }
 
 /** Wraps text into lines of roughly `maxCharsPerLine` characters, splitting on whitespace. */
@@ -113,10 +116,12 @@ function buildSvg(params: {
     )
     .join("");
 
-  let svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  let svg =
+    `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
   svg += `<rect width="${width}" height="${height}" fill="${background}"/>`;
-  svg +=
-    `<circle cx="${width - 90}" cy="90" r="140" fill="${accent}" opacity="0.22"/>`;
+  svg += `<circle cx="${
+    width - 90
+  }" cy="90" r="140" fill="${accent}" opacity="0.22"/>`;
   svg += `<rect x="${marginX}" y="${
     height - 96
   }" width="140" height="10" rx="5" fill="${accent}"/>`;
@@ -187,9 +192,8 @@ export default function ogPlugin(options: OgPluginOptions = {}): StenoPlugin {
         options.siteUrl ? options.siteUrl.replace(/\/$/, "") : ""
       }/${imageDir}/${filename}`;
 
-      const metaTags = `  <meta property="og:image" content="${
-        escapeXml(imageUrl)
-      }">\n` +
+      const metaTags =
+        `  <meta property="og:image" content="${escapeXml(imageUrl)}">\n` +
         `  <meta property="og:image:width" content="${width}">\n` +
         `  <meta property="og:image:height" content="${height}">\n` +
         `  <meta property="og:image:type" content="image/svg+xml">\n`;
